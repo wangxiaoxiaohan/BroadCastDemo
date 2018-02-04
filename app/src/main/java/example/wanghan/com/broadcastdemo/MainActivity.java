@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private IntentFilter intentFilter;
@@ -17,17 +18,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         intentFilter =new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        netWorkChangeReceiver=new NetWorkChangeReceiver();
+        registerReceiver(netWorkChangeReceiver,intentFilter);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(netWorkChangeReceiver);
     }
 
     class  NetWorkChangeReceiver extends BroadcastReceiver{
          @Override
          public void onReceive(Context context, Intent intent) {
-
+             Toast.makeText(getApplicationContext(),"网络状态变化",Toast.LENGTH_SHORT).show();
          }
      }
 
